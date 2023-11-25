@@ -20,7 +20,7 @@ const questions = [
       "View All Employees",
       "Add Employee",
       "Update employee Role",
-      "View All  Roles",
+      "View All Roles",
       "Add Role",
       "View All Departments",
       "Add Department",
@@ -39,6 +39,41 @@ function init() {
           console.table(results);
         }
       );
+    }
+    else if (res.question === "View All Roles") {
+      db.query(
+        "SELECT title FROM roles",
+        function (err, results) {
+          console.table(results);
+        }
+      );
+    }
+    else if (res.question === "View All Employees") {
+      db.query(
+        "SELECT first_name, last_name FROM employee",
+        function (err, results) {
+          console.table(results);
+        }
+      );
+    }
+    else if (res.question === "Add Department") {
+      inquirer.prompt([
+        {
+          type: "input",
+          name: "addDepartment",
+          message: "What is the name of the department being added?"
+        },
+      ])
+      .then(answers => {
+        db.query(
+          "INSERT INTO department (name) VALUES (?)", [answers.addDepartment],
+          function (err, results) {
+            console.log(`Added department: ${answers.addDepartment}`);
+            return inquirer.prompt(questions);
+          }
+        );
+      });
+      
     }
   });
 }
