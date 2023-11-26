@@ -37,25 +37,31 @@ function init() {
         "SELECT name FROM department",
         function (err, results) {
           console.table(results);
+          init();
         }
       );
     }
+
     else if (res.question === "View All Roles") {
       db.query(
         "SELECT title FROM roles",
         function (err, results) {
           console.table(results);
+          init();
         }
       );
     }
+
     else if (res.question === "View All Employees") {
       db.query(
         "SELECT first_name, last_name FROM employee",
         function (err, results) {
           console.table(results);
+          init();
         }
       );
     }
+
     else if (res.question === "Add Department") {
       inquirer.prompt([
         {
@@ -69,10 +75,44 @@ function init() {
           "INSERT INTO department (name) VALUES (?)", [answers.addDepartment],
           function (err, results) {
             console.log(`Added department: ${answers.addDepartment}`);
-            return inquirer.prompt(questions);
+            console.log(results);
+            init();
           }
         );
       });
+      
+      
+    }
+
+    else if (res.question === "Add Role") {
+      inquirer.prompt([
+        {
+          type: "input",
+          name: "roleName",
+          message: "What is the name of the role being added?"
+        },
+        {
+          type: "input",
+          name: "roleSalary",
+          message: "What is the salary of this role?"
+        },
+        {
+          type: "input",
+          name: "roleDepartment",
+          message: "What is the department that this role is being added to?"
+        },
+      ])
+      .then(answers => {
+        db.query(
+          "INSERT INTO roles (title, salary, department_id) VALUES (?,?,?)", [answers.roleName, answers.roleSalary, answers.roleDepartment],
+          function (err, results) {
+            console.log(`Added role: ${answers.roleName} with the salary of ${answers.roleSalary} in department ${answers.roleDepartment}`);
+            console.log(results);
+            init();
+          }
+        );
+      });
+      
       
     }
   });
