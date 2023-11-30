@@ -34,7 +34,7 @@ function init() {
     // If user enters text longer than 3 characters, return error message.
     if (res.question === "View All Departments") {
       db.query(
-        "SELECT name as department FROM department",
+        "SELECT name as department, id FROM department",
         function (err, results) {
           console.table(results);
           init();
@@ -54,7 +54,7 @@ function init() {
 
     else if (res.question === "View All Employees") {
       db.query(
-        "SELECT employee.id, employee.first_name, employee.last_name, roles.title AS role, department.name AS department, roles.salary AS salary FROM employee JOIN roles ON employee.role_id = roles.id JOIN department ON roles.department_id = department.id",
+        "SELECT employee.id, employee.first_name, employee.last_name, roles.title AS role, department.name AS department, roles.salary AS salary, manager.first_name AS manager FROM employee JOIN roles ON employee.role_id = roles.id JOIN department ON roles.department_id = department.id LEFT JOIN employee manager ON employee.manager_id = manager.id",
         function (err, results) {
           console.table(results);
           init();
