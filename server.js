@@ -19,7 +19,7 @@ const questions = [
     choices: [
       "View All Employees",
       "Add Employee",
-      "Update employee Role",
+      "Update Employee Role",
       "View All Roles",
       "Add Role",
       "View All Departments",
@@ -54,7 +54,7 @@ function init() {
 
     else if (res.question === "View All Employees") {
       db.query(
-        "SELECT * FROM employee JOIN roles ON employee.role_id = roles.id JOIN department ON roles.department_id = department.id;",
+        "SELECT employee.id, employee.first_name, employee.last_name, roles.title AS role, department.name AS department, roles.salary AS salary FROM employee JOIN roles ON employee.role_id = roles.id JOIN department ON roles.department_id = department.id",
         function (err, results) {
           console.table(results);
           init();
@@ -159,6 +159,40 @@ function init() {
           "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)", [answers.firstName, answers.lastName, answers.role, answers.manager],
           function (err, results) {
             console.log(`Added employee: ${answers.firstName} ${answers.lastName}`);
+            init();
+          }
+        );
+      });
+    })
+  }) 
+    }
+
+    else if (res.question === "Update Employee Role") {
+      db.promise().query("SELECT first_name as name FROM employee")
+      // Change for manager_id
+      .then(([employeeList]) => {
+        db.promise().query("SELECT id as value,title as name FROM roles")
+      .then(([roleList]) => {
+
+      inquirer.prompt([
+        {
+          type: "list",
+          name: "name",
+          message: "Who is the employee you want to update?",
+          choices: employeeList
+        },
+        {
+          type: "list",
+          name: "role",
+          message: "What role do you want to give this employee?",
+          choices: roleList
+        },
+      ])
+      .then(answers => {
+        db.query(
+          `UPDATE employee SET role_id = ? WHERE first_name = ?`, [answers.role, answers.name],
+          function (err, results) {
+            console.log(`Updated ${answers.name}'s role`);
             init();
           }
         );
