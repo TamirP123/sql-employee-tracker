@@ -25,7 +25,7 @@ THEN I am prompted to select an employee to update and their new role and this i
 
 ### Live website and repo
 
-https://github.com/TamirP123/svg-logo-maker
+https://github.com/TamirP123/sql-employee-tracker
 
 #### Photo of application
 
@@ -33,4 +33,4 @@ https://github.com/TamirP123/svg-logo-maker
 
 #### Video Walthrough
 
-https://drive.google.com/file/d/1g09okuzhto5Qtv7QBQjmzE5hEeZc0UdX/view?usp=sharing
+https://drive.google.com/file/d/1wwYN9KoLPLwdldsh_Kthkvl-Y5IW1UF4/view
